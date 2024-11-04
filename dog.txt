@@ -1,25 +1,14 @@
-local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
 
--- Replace with your Discord webhook URL
-local webhookUrl = "https://discord.com/api/webhooks/1301262203651096649/M70N1hrSBWPZzFdSRsLavnZDc5H26ihR8NoYjctzDh79ucKVRPRHhDx9li9xYzA6ndw4"
-
-local function sendWebhookMessage(content)
-    local data = {
-        content = content
-    }
-
-    local jsonData = HttpService:JSONEncode(data)
-
-    local success, response = pcall(function()
-        return HttpService:PostAsync(webhookUrl, jsonData, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if success then
-        print("Webhook message sent successfully!")
-    else
-        warn("Failed to send webhook message: " .. response)
+local function killAllPlayers()
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.Health = 0 -- Set health to 0 to kill the player
+        end
     end
 end
 
--- Example usage
-sendWebhookMessage("Hello from Roblox!")
+-- Example: Call the function to kill all players
+killAllPlayers()

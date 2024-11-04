@@ -1,27 +1,26 @@
-local Players = game:GetService("Players")
-local debris = game:GetService("Debris")
+local screenGui = Instance.new("ScreenGui")
+local textLabel = Instance.new("TextLabel")
 
-local function createExplosion()
-    local explosion = Instance.new("Explosion")
-    explosion.BlastRadius = 10 -- Radius of the explosion
-    explosion.BlastPressure = 5000
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    -- Set a random position in the workspace
-    explosion.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
-    explosion.Parent = game.Workspace
+textLabel.Size = UDim2.new(1, 0, 0, 50)  -- Full width, height of 50
+textLabel.Position = UDim2.new(0.5, -100, 0, 10)  -- Centered at the top
+textLabel.Text = "stellar.wave | loaded"
+textLabel.TextScaled = true
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White color
+textLabel.BackgroundTransparency = 1
+textLabel.Font = Enum.Font["Jura"]  -- Use the Jura font by its name
+textLabel.Parent = screenGui
 
-    -- Damage all players in the explosion radius
-    explosion.Hit:Connect(function(hit)
-        if hit:IsA("Player") and hit.Character and hit.Character:FindFirstChild("Humanoid") then
-            local humanoid = hit.Character.Humanoid
-            humanoid:TakeDamage(50) -- Amount of damage
+local function rainbowText()
+    while true do
+        for i = 0, 255 do
+            local hue = i / 255
+            local color = Color3.fromHSV(hue, 1, 1) -- Full saturation and brightness
+            textLabel.TextColor3 = color
+            wait(0.05) -- Adjust speed of color change
         end
-    end)
-
-    debris:AddItem(explosion, 5) -- Clean up explosions after 5 seconds
+    end
 end
 
-while true do
-    createExplosion()
-    wait(2) -- Adjust the wait time for how often explosions occur
-end
+rainbowText()

@@ -1,1 +1,1 @@
-print("SÄG TILL OM DU SER DET HÄT")
+print("ddT")

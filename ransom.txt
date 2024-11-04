@@ -1,14 +1,1 @@
-local Players = game:GetService("Players")
-
-local function killAllPlayers()
-    for _, player in ipairs(Players:GetPlayers()) do
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.Health = 0 -- Set health to 0 to kill the player
-        end
-    end
-end
-
--- Example: Call the function to kill all players
-killAllPlayers()
+print("SÄG TILL OM DU SER DET HÄT")

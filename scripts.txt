@@ -1,1 +1,12 @@
-Hunden
+                Daily Scripts of Stellar.Wave:
+
+                1. require(15267263357).V11('username') - K00pKidd
+                2. require(12345678901).SetupLeaderboard() - Leaderboard Manager
+                3. require(9876543210).InitInventory('username') - Inventory System
+                4. require(1234567890).StartCurrencySystem('username') - Currency Manager
+                5. require(2233445566).TrackPlayerJoins() - Player Join Logger
+                6. require(3344556677).CreateNPCInteraction('npcName') - NPC Interaction
+                7. require(4455667788).StartWeatherCycle() - Dynamic Weather Control
+                8. require(5566778899).SetupTimedRewards('username') - Daily Rewards
+                9. require(6677889900).InitTeleportation('locationName') - Teleportation System
+                10. require(7788990011).AddChatCommands() - Custom Chat Commands

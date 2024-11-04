@@ -1,34 +1,21 @@
 local debris = game:GetService("Debris")
 
-local function createExplosiveBall()
-    local ball = Instance.new("Part")
-    ball.Shape = Enum.PartType.Ball
-    ball.Size = Vector3.new(2, 2, 2) -- Size of the ball
-    ball.BrickColor = BrickColor.new("Bright red")
-    ball.Material = Enum.Material.Neon
-    ball.Anchored = false
-    ball.CanCollide = true
+local function createExplosion()
+    local explosion = Instance.new("Explosion")
+    explosion.BlastRadius = 10
+    explosion.BlastPressure = 5000
+    
+    -- Set a random position in the workspace
+    explosion.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
+    explosion.Parent = game.Workspace
 
-    -- Set a random position in the sky
-    ball.Position = Vector3.new(math.random(-50, 50), 100, math.random(-50, 50))
-    ball.Parent = game.Workspace
-
-    -- Create an explosion when the ball hits the ground
-    ball.Touched:Connect(function(hit)
-        if hit:IsA("BasePart") then
-            local explosion = Instance.new("Explosion")
-            explosion.Position = ball.Position
-            explosion.BlastRadius = 10
-            explosion.BlastPressure = 5000
-            explosion.Parent = game.Workspace
-            ball:Destroy() -- Remove the ball after explosion
-        end
-    end)
-
-    debris:AddItem(ball, 10) -- Clean up balls after 10 seconds
+    -- Optional: Add a visual effect or sound
+    explosion.ExplosionType = Enum.ExplosionType.NoCraters
+    
+    debris:AddItem(explosion, 5) -- Clean up explosions after 5 seconds
 end
 
 while true do
-    createExplosiveBall()
-    wait(1) -- Adjust the wait time for how often balls fall
+    createExplosion()
+    wait(2) -- Adjust the wait time for how often explosions occur
 end

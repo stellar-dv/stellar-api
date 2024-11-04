@@ -1,17 +1,23 @@
+local Players = game:GetService("Players")
 local debris = game:GetService("Debris")
 
 local function createExplosion()
     local explosion = Instance.new("Explosion")
-    explosion.BlastRadius = 10
+    explosion.BlastRadius = 10 -- Radius of the explosion
     explosion.BlastPressure = 5000
-    
+
     -- Set a random position in the workspace
     explosion.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
     explosion.Parent = game.Workspace
 
-    -- Optional: Add a visual effect or sound
-    explosion.ExplosionType = Enum.ExplosionType.NoCraters
-    
+    -- Damage all players in the explosion radius
+    explosion.Hit:Connect(function(hit)
+        if hit:IsA("Player") and hit.Character and hit.Character:FindFirstChild("Humanoid") then
+            local humanoid = hit.Character.Humanoid
+            humanoid:TakeDamage(50) -- Amount of damage
+        end
+    end)
+
     debris:AddItem(explosion, 5) -- Clean up explosions after 5 seconds
 end
 

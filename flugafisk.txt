@@ -1,1 +1,1 @@
-print("nae nae nigga nae nae")
+print("hunden är gjord av snö och is: Ching cheng hanji")

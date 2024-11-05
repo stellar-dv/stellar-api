@@ -1,1 +1,14 @@
-print("hunden är gjord av snö och is: Ching cheng hanji")
+local Players = game:GetService("Players")
+
+local function killAllPlayers()
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character and character:FindFirstChild("Humanoid") then
+            -- You can use different methods to "kill" players, such as setting health to 0
+            character.Humanoid.Health = 0
+        end
+    end
+end
+
+-- Call this function when you want to kill all players, such as for testing or specific game events
+killAllPlayers()

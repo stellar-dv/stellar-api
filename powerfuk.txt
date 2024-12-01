@@ -84,7 +84,7 @@ Players.PlayerAdded:Connect(function(player)
         Text = player.Name .. " joined the game. Executing stellar again.",
         Duration = 5
     })
-
+    wait(2) -- Wait for a bit before refreshing
 executeStellarCrash()
 end)
 

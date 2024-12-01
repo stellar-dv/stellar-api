@@ -5,96 +5,13 @@ local RunService = game:GetService("RunService")
 
 local url = "httspy.com"
 
-local guiName = "StellarCum"
-
-local CoreGui = game:GetService("CoreGui")
-
-if not CoreGui:FindFirstChild(guiName) then
-   
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = guiName  
-
-    
-    screenGui.Parent = CoreGui
-
-    print("Stellar Crash has been loaded")
-else
-   
-    print("Stellar is already loaded nigger")
-    return
-end
 
 -- Create a TextLabel to display FPS on the screen
 local player = Players.LocalPlayer
 
-
-
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "FPSDisplay"
-screenGui.ResetOnSpawn = false -- Keep GUI persistent after respawn
-screenGui.Parent = CoreGui -- Parent it to CoreGui
-
--- Create the main frame for styling
-local TweenService = game:GetService("TweenService")  -- Add TweenService to animate the RGB effect
-
--- Create the main frame for styling
-local displayFrame = Instance.new("Frame")
-displayFrame.Name = "DisplayFrame"
-displayFrame.Size = UDim2.new(0, 220, 0, 80) -- Adjust for FPS and Ping
-displayFrame.Position = UDim2.new(0, 10, 0, 10) -- Top-left corner
-displayFrame.BackgroundTransparency = 0.2
-displayFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- Dark gray
-displayFrame.BorderSizePixel = 2
-displayFrame.BorderColor3 = Color3.fromRGB(255, 255, 255) -- Light blue border (will be animated to RGB)
-displayFrame.Parent = screenGui
-
--- Add a UI corner for rounded edges
-local uiCorner = Instance.new("UICorner")
-uiCorner.CornerRadius = UDim.new(0, 10) -- Rounded corners
-uiCorner.Parent = displayFrame
-
--- Add a UIStroke for RGB border effect
-local uiStroke = Instance.new("UIStroke")
-uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-uiStroke.Thickness = 2 -- Set border thickness
-uiStroke.Parent = displayFrame
-
--- Function to create RGB color tween
-
--- Create a label for the FPS text
-local fpsLabel = Instance.new("TextLabel")
-fpsLabel.Name = "FPSLabel"
-fpsLabel.Size = UDim2.new(1, -20, 0.5, -10) -- Top half for FPS
-fpsLabel.Position = UDim2.new(0, 10, 0, 10) -- Padding inside the frame
-fpsLabel.BackgroundTransparency = 1 -- No background for the label
-fpsLabel.TextColor3 = Color3.fromRGB(200, 200, 200) -- Gray text
-fpsLabel.Font = Enum.Font.Gotham -- Sleek modern font
-fpsLabel.TextSize = 16 -- Larger, clean text size
-fpsLabel.TextXAlignment = Enum.TextXAlignment.Center -- Center horizontally
-fpsLabel.TextYAlignment = Enum.TextYAlignment.Center -- Center vertically
-fpsLabel.Text = "FPS: 0"
-fpsLabel.Parent = displayFrame
-
--- Create a label for the Ping text
-local pingLabel = Instance.new("TextLabel")
-pingLabel.Name = "PingLabel"
-pingLabel.Size = UDim2.new(1, -20, 0.5, -10) -- Bottom half for Ping
-pingLabel.Position = UDim2.new(0, 10, 0.5, 5) -- Below FPS
-pingLabel.BackgroundTransparency = 1 -- No background for the label
-pingLabel.TextColor3 = Color3.fromRGB(200, 200, 200) -- Gray text
-pingLabel.Font = Enum.Font.Gotham -- Sleek modern font
-pingLabel.TextSize = 16 -- Larger, clean text size
-pingLabel.TextXAlignment = Enum.TextXAlignment.Center -- Center horizontally
-pingLabel.TextYAlignment = Enum.TextYAlignment.Center -- Center vertically
-pingLabel.Text = "Ping: 0ms"
-pingLabel.Parent = displayFrame
-
 if not game:IsLoaded() then
     game.Loaded:wait()
 end
-
-
-
 
 -- Function to check if the game contains "Bloxbiz"
 local function checkForBloxbiz()
@@ -106,82 +23,6 @@ local function checkForBloxbiz()
     return false
 end
 
-function SendMessage(url, message)
-    local http = game:GetService("HttpService")
-    local headers = {
-        ["Content-Type"] = "application/json"
-    }
-    local data = {
-        ["content"] = message
-    }
-    local body = http:JSONEncode(data)
-    local response = request({
-        Url = url,
-        Method = "POST",
-        Headers = headers,
-        Body = body
-    })
-    print("Sent")
-end
-
-function SendMessageEMBED(url, embed)
-    local http = game:GetService("HttpService")
-    local headers = {
-        ["Content-Type"] = "application/json"
-    }
-    local data = {
-        ["embeds"] = {
-            {
-                ["title"] = embed.title,
-                ["description"] = embed.description,
-                ["color"] = embed.color,
-                ["fields"] = embed.fields,
-                ["footer"] = {
-                    ["text"] = embed.footer.text
-                }
-            }
-        }
-    }
-    local body = http:JSONEncode(data)
-    local response = request({
-        Url = url,
-        Method = "POST",
-        Headers = headers,
-        Body = body
-    })
-    print("Sent")
-end
-
-local gameInfo = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
-
--- Get the game name and image URL
-local gameName = gameInfo.Name
-local gameLink = "https://www.roblox.com/games/" .. game.PlaceId
-local playerCount = #Players:GetPlayers()
-
-local embed = {
-    ["title"] = "Supported Game Found",
-    ["description"] = "A supported game has been found!",
-    ["color"] = 65280,
-    ["fields"] = {
-        {
-            ["name"] = "Place Name",
-            ["value"] = gameName
-        },
-        {
-            ["name"] = "Place Link",
-            ["value"] = gameLink
-        },
-       {
-            ["name"] = "Players Online",
-            ["value"] = tostring(playerCount)
-        }
-    },
-    ["footer"] = {
-        ["text"] = "Made by Lunar and he hates niggers"
-}
-}
-
 -- Notify whether the game is supported
 if checkForBloxbiz() then
     StarterGui:SetCore("SendNotification", {
@@ -189,10 +30,6 @@ if checkForBloxbiz() then
         Text = "This game is supported. Stellar Crash is initializing...",
         Duration = 5
     })
-
-SendMessageEMBED(url, embed)
-
-
 else
     StarterGui:SetCore("SendNotification", {
         Title = "Game Not Supported",
@@ -231,11 +68,6 @@ RunService.RenderStepped:Connect(function()
         frames = 0
         lastUpdateTime = tick()
 
-        -- Update FPS display
-        fpsLabel.Text = "FPS: " .. tostring(math.floor(fps))
-
-local ping = math.floor(Players.LocalPlayer:GetNetworkPing() * 1000) -- Convert seconds to ms
-        pingLabel.Text = "Ping: " .. tostring(ping) .. "ms"
 
         -- Check if FPS is below 20 and remove accessories instantly if necessary
         if fps < 20 then

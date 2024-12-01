@@ -1,0 +1,62 @@
+-- Get the player's character and humanoid
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Wait for the character to load and get the humanoid root part
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Store the initial X, Y, and Z positions
+local initialXPosition = humanoidRootPart.Position.X
+local initialZPosition = humanoidRootPart.Position.Z
+local initialYPosition = humanoidRootPart.Position.Y
+
+-- Function to force the humanoid to stay in the Swimming state
+local function forceSwimState()
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if humanoid and humanoid.Parent then
+            -- Force the humanoid to stay in the Swimming state
+            humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+        end
+    end)
+end
+
+-- Function to teleport the player up to a max height and bring them down if they exceed it
+local function teleportUpAndDown()
+    local maxHeight = initialYPosition + 20  -- 20 units above the initial Y position
+    local fallToY = 3       -- The height to teleport downwards
+
+    -- Run the teleport and fall logic in a loop
+    while true do
+        -- Teleport the player upwards to a position within 20 units of their initial Y position
+        if humanoidRootPart.Position.Y < maxHeight then
+            humanoidRootPart.CFrame = CFrame.new(initialXPosition, humanoidRootPart.Position.Y + 1, initialZPosition)
+        end
+
+        -- If the player exceeds the maxHeight, teleport them down to fallToY
+        if humanoidRootPart.Position.Y > maxHeight then
+            humanoidRootPart.CFrame = CFrame.new(initialXPosition, fallToY, initialZPosition)
+
+            -- Apply a high downward velocity to make the player fall instantly
+            humanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, -2000, 0)  -- Fast downward velocity
+
+            -- Wait until the player reaches fallToY or below
+            while humanoidRootPart.Position.Y > fallToY do
+                wait() -- Continuously check the position
+            end
+
+            -- Stop falling at fallToY, resetting velocity and ensuring X and Z stay locked
+            humanoidRootPart.AssemblyLinearVelocity = Vector3.zero
+            humanoidRootPart.CFrame = CFrame.new(initialXPosition, fallToY, initialZPosition)
+        end
+
+        -- Small delay before checking again
+        wait(0.1)
+    end
+end
+
+-- Start the swim state force and teleportation loop
+forceSwimState()
+
+-- Start the teleportation loop
+teleportUpAndDown()

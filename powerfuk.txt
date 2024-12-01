@@ -3,42 +3,6 @@ local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-local url = "httspy.com"
-
-
--- Create a TextLabel to display FPS on the screen
-local player = Players.LocalPlayer
-
-if not game:IsLoaded() then
-    game.Loaded:wait()
-end
-
--- Function to check if the game contains "Bloxbiz"
-local function checkForBloxbiz()
-    for _, item in ipairs(ReplicatedStorage:GetDescendants()) do
-        if item.Name:lower():find("bloxbiz") then
-            return true
-        end
-    end
-    return false
-end
-
--- Notify whether the game is supported
-if checkForBloxbiz() then
-    StarterGui:SetCore("SendNotification", {
-        Title = "Game Supported",
-        Text = "This game is supported. Stellar Crash is initializing...",
-        Duration = 5
-    })
-else
-    StarterGui:SetCore("SendNotification", {
-        Title = "Game Not Supported",
-        Text = "This game is not supported. No scripts will execute.",
-        Duration = 5
-    })
-    return -- Stop execution if the game is unsupported
-end
-
 -- Function to remove all accessories from all players
 local function removeAllAccessories()
     for _, player in pairs(Players:GetPlayers()) do
@@ -121,7 +85,7 @@ Players.PlayerAdded:Connect(function(player)
         Duration = 5
     })
 
-
+executeStellarCrash()
 end)
 
 Players.PlayerRemoving:Connect(function(player)
